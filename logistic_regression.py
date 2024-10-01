@@ -35,7 +35,7 @@ def cost_grad(x, y, w, lambda_=0.01):
 
     cost = -np.mean(y_binary * np.log(h) + (1 - y_binary) * np.log(1 - h)) + (lambda_ / 2) * np.sum(w ** 2)
 
-    gradient = (x.T @ (h - y_binary)) / n + lambda_ * w  # regularization of gradient
+    gradient = (x.T @ (h - y_binary)) / n #+ lambda_ * w  # regularization of gradient
 
     #assert gradient.shape == w.shape
     return cost, gradient
@@ -112,7 +112,7 @@ class LogisticRegressionClassifier:
         return s
 
 
-    def fit(self, x, y, w=None, lr=0.1, batch_size=16, epochs=10, patience=15):
+    def fit(self, x, y, w=None, lr=0.1, batch_size=16, epochs=10, patience=25):
 
         n, d = x.shape
         if w is None:
