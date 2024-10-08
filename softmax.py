@@ -123,6 +123,7 @@ class SoftmaxClassifier:
                 cost, grad = self.cost_grad(X_batch, Y_batch, W)
                 W -= lr * grad
 
+            cost, _ = self.cost_grad(X, Y, W) # compute cost for the entire dataset
             history.append(cost)
             print(f'Epoch {epoch + 1} / {epochs} - Cost: {cost:.4f}')
 
