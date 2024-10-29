@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-from h1_util import numerical_grad_check
+from hw1.h1_util import numerical_grad_check
 
 ### Static functions ###
 def logistic(z):

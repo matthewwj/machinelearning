@@ -8,9 +8,9 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.pipeline import Pipeline
 
-from logistic_regression import LogisticRegressionClassifier
-from logistic_regression import tune_hyperparameters
-from h1_util import print_score, export_fig
+from hw1.logistic_regression import LogisticRegressionClassifier
+from hw1.logistic_regression import tune_hyperparameters
+from hw1.h1_util import print_score, export_fig
 import matplotlib.pyplot as plt
 from argparse import ArgumentParser
 

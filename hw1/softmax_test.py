@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import load_wine
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from softmax import SoftmaxClassifier
-from h1_util import export_fig, print_score, load_digits_train_data, load_digits_test_data
+from hw1.softmax import SoftmaxClassifier
+from hw1.h1_util import export_fig, print_score, load_digits_train_data, load_digits_test_data
 from argparse import ArgumentParser
 
 
