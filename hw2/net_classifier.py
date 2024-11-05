@@ -242,9 +242,43 @@ class NetClassifier():
             'val_loss': None,
             'val_acc': None, 
         }
-
-        
+        params = init_params
+        n = X_train.shape[0]
         ### YOUR CODE HERE
+        for epoch in range(epochs):
+            permutation = np.random.permutation(n)
+            x_shuffled = X_train[permutation]
+            y_shuffled = y_train[permutation]
+
+            for i in range(0, n, batch_size):
+                x_batch = x_shuffled[i:i + batch_size]
+                y_batch = y_shuffled[i:i + batch_size]
+                params["W1"] = W1
+                params["W2"] = W2
+                params["b1"] = b1
+                params["b2"] = b2
+
+                loss, gradient = self.cost_grad(x_batch, y_batch, params, c)
+                W1 = W1 - lr * gradient['d_w1']
+                W2 = W2 - lr * gradient['d_w2']
+                b1 = b1 - lr * gradient['d_b1']
+                b2 = b2 - lr * gradient['d_b2']
+
+            train_loss, _ = self.cost_grad(X_train, y_train, params, c)
+            train_acc = self.score(X_train, y_train, params)
+            val_loss, _ = self.cost_grad(X_val, y_val, params, c)
+            val_acc = self.score(X_val, y_val, params)
+
+            hist["train_loss"] = train_loss
+            hist["train_acc"] = train_acc
+            hist["val_loss"] = val_loss
+            hist["val_acc"] = val_acc
+            print(f"epoch" {epoch})
+            print(hist["train_loss"])
+            print(hist["train_acc"])
+            print(hist["val_loss"])
+            print(hist["val_acc"])
+
         ### END CODE
         # hist dict should look like this with something different than none
         #hist = {'train_loss': None, 'train_acc': None, 'val_loss': None, 'val_acc': None}
