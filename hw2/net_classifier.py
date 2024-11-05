@@ -2,7 +2,7 @@ import numpy as np
 
 def one_in_k_encoding(vec, k):
     """ One-in-k encoding of vector to k classes 
-    
+    .
     Args:
        vec: numpy array - data to encode
        k: int - number of classes to encode to (0,...,k-1)
