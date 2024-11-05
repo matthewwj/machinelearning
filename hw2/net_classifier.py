@@ -129,7 +129,7 @@ class NetClassifier():
         acc = None
         ### YOUR CODE HERE
         predictions = self.predict(X, params)
-        correct_predictions = np.sum(predictions == y.flatten()) # Flatten y to ensure shapes match
+        correct_predictions = np.sum(predictions == y.flatten()) # Shape stuff..
         acc = correct_predictions / X.shape[0]
         ### END CODE
         return acc
@@ -178,14 +178,14 @@ class NetClassifier():
 
         # Computing cross entropy with weight decay
         # Negative log likelihood cross entropy cost
-        # Formula = -sum^k_j=1 y_j ln(h(x)_j)
+        # Formula = -sum^k_j=1 y_j ln(h(x)_j) + c*ln(w1w2)^2
         cross_entropy_cost = -np.mean(np.sum(labels * np.log(a2), axis=1))
         # Compute decay using L2 regularisation
         decay = c * (np.sum(W1**2) + np.sum(W2**2))
         # Total cost = Loss + decay
         cost = cross_entropy_cost + decay
         ### END CODE
-        d2 = a2 - labels
+        
         
         
         ### YOUR CODE HERE - BACKWARDS PASS - compute derivatives of all weights and bias, store them in d_w1, d_w2, d_b1, d_b2
