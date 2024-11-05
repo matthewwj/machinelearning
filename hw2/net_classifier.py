@@ -38,6 +38,14 @@ def softmax(X):
     """
     res = np.zeros(X.shape)
     ### YOUR CODE HERE
+    for i in range(X.shape[0]):
+        x = X[i]
+
+        max_x = np.max(x)
+        log_sum_exp = np.log(np.sum(np.exp(x - max_x))) + max_x
+        softmax_log = x - log_sum_exp
+
+        res[i] = np.exp(softmax_log)
     ### END CODE
     return res
 
@@ -51,6 +59,7 @@ def relu(x):
         Beware of np.max and look at np.maximum
     """
     ### YOUR CODE HERE
+    res = np.maximum(0, x)
     ### END CODE
     return res
 
@@ -96,6 +105,11 @@ class NetClassifier():
             params = self.params
         pred = None
         ### YOUR CODE HERE
+        w1 = np.dot(X, params['W1']) + params['b1']
+        z1 = relu(w1)
+        w2 = np.dot(z1, params['W2']) + params['b2']
+        pred_probs = softmax(w2)
+        pred = np.argmax(pred_probs, axis=1)
         ### END CODE
         return pred
      
@@ -114,6 +128,9 @@ class NetClassifier():
             params = self.params
         acc = None
         ### YOUR CODE HERE
+        predictions = self.predict(X, params)
+        correct_predictions = np.sum(predictions == y.flatten()) # Flatten y to ensure shapes match
+        acc = correct_predictions / X.shape[0]
         ### END CODE
         return acc
     
@@ -153,7 +170,23 @@ class NetClassifier():
         labels = one_in_k_encoding(y, W2.shape[1]) # shape n x k
                         
         ### YOUR CODE HERE - FORWARD PASS - compute cost with weight decay and store relevant values for backprop
+        # Feed forward pass.
+        z1 = X.dot(W1) + b1
+        a1 = relu(z1)
+        z2 = a1.dot(W2) + b2 
+        a2 = softmax(z2)
+
+        # Computing cross entropy with weight decay
+        # Negative log likelihood cross entropy cost
+        # Formula = -sum^k_j=1 y_j ln(h(x)_j)
+        cross_entropy_cost = -np.mean(np.sum(labels * np.log(a2), axis=1))
+        # Compute decay using L2 regularisation
+        decay = c * (np.sum(W1**2) + np.sum(W2**2))
+        # Total cost = Loss + decay
+        cost = cross_entropy_cost + decay
         ### END CODE
+        d2 = a2 - labels
+        
         
         ### YOUR CODE HERE - BACKWARDS PASS - compute derivatives of all weights and bias, store them in d_w1, d_w2, d_b1, d_b2
         ### END CODE
