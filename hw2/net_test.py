@@ -14,7 +14,7 @@ def export_fig(fig, name):
     my_path = os.path.join(result_path, name)
     fig.savefig(my_path)
 
-def digits_test(hidden_size=256, epochs=30, batch_size=32, lr=0.1, c=1e-4):
+def digits_test(hidden_size=256, epochs=5, batch_size=32, lr=0.1, c=1e-4):
     net = NetClassifier()
     digits, labels = load_digits_train_data()
     digits_train, digits_val, labels_train, labels_val = train_test_split(digits, labels, test_size=0.15, random_state=42)

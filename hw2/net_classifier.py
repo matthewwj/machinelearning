@@ -210,7 +210,7 @@ class NetClassifier():
         # the return signature
         return cost, {'d_w1': d_w1, 'd_w2': d_w2, 'd_b1': d_b1, 'd_b2': d_b2}
         
-    def fit(self, X_train, y_train, X_val, y_val, init_params, batch_size=32, lr=0.1, c=1e-4, epochs=30):
+    def fit(self, X_train, y_train, X_val, y_val, init_params, batch_size=32, lr=0.1, c=1e-4, epochs=5):
         """ Run Mini-Batch Gradient Descent on data X, Y to minimize the in sample error for Neural Net classification
         Printing the performance every epoch is a good idea to see if the algorithm is working
     
@@ -237,12 +237,12 @@ class NetClassifier():
         W2 = init_params['W2']
         b2 = init_params['b2']
         hist = {
-            'train_loss': None,
-            'train_acc': None,
-            'val_loss': None,
-            'val_acc': None, 
+            'train_loss': [],
+            'train_acc': [],
+            'val_loss': [],
+            'val_acc': [], 
         }
-        params = init_params
+        self.params = init_params
         n = X_train.shape[0]
         ### YOUR CODE HERE
         for epoch in range(epochs):
@@ -253,27 +253,27 @@ class NetClassifier():
             for i in range(0, n, batch_size):
                 x_batch = x_shuffled[i:i + batch_size]
                 y_batch = y_shuffled[i:i + batch_size]
-                params["W1"] = W1
-                params["W2"] = W2
-                params["b1"] = b1
-                params["b2"] = b2
+                self.params["W1"] = W1
+                self.params["W2"] = W2
+                self.params["b1"] = b1
+                self.params["b2"] = b2
 
-                loss, gradient = self.cost_grad(x_batch, y_batch, params, c)
+                loss, gradient = self.cost_grad(x_batch, y_batch, self.params, c)
                 W1 = W1 - lr * gradient['d_w1']
                 W2 = W2 - lr * gradient['d_w2']
                 b1 = b1 - lr * gradient['d_b1']
                 b2 = b2 - lr * gradient['d_b2']
 
-            train_loss, _ = self.cost_grad(X_train, y_train, params, c)
-            train_acc = self.score(X_train, y_train, params)
-            val_loss, _ = self.cost_grad(X_val, y_val, params, c)
-            val_acc = self.score(X_val, y_val, params)
+            train_loss, _ = self.cost_grad(X_train, y_train, self.params, c)
+            train_acc = self.score(X_train, y_train, self.params)
+            val_loss, _ = self.cost_grad(X_val, y_val, self.params, c)
+            val_acc = self.score(X_val, y_val, self.params)
 
-            hist["train_loss"] = train_loss
-            hist["train_acc"] = train_acc
-            hist["val_loss"] = val_loss
-            hist["val_acc"] = val_acc
-            print(f"epoch" {epoch})
+            hist["train_loss"].append(train_loss)
+            hist["train_acc"].append(train_acc)
+            hist["val_loss"].append(val_loss)
+            hist["val_acc"].append(val_acc)
+            print(f"epoch {epoch}" )
             print(hist["train_loss"])
             print(hist["train_acc"])
             print(hist["val_loss"])
