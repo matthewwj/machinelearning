@@ -184,11 +184,28 @@ class NetClassifier():
         decay = c * (np.sum(W1**2) + np.sum(W2**2))
         # Total cost = Loss + decay
         cost = cross_entropy_cost + decay
+        
         ### END CODE
-        
-        
-        
+    
         ### YOUR CODE HERE - BACKWARDS PASS - compute derivatives of all weights and bias, store them in d_w1, d_w2, d_b1, d_b2
+        diff = a2 - labels
+        de_diff = diff
+        ddiff_pred = 1
+        de_pred = de_diff * ddiff_pred
+        
+        d_w2 = a1.T @ de_pred / X.shape[0]
+        de_hout = de_pred @ W2.T
+        
+        dhout_hin = (z1 > 0)
+        de_hin = de_hout * dhout_hin
+
+        d_b2 = np.sum(diff, axis=0, keepdims=True) / X.shape[0]
+        
+        d_b1 = np.sum(de_hin, axis=0, keepdims=True) / X.shape[0]
+        d_w1 = X.T @ de_hin / X.shape[0]
+        d_w1 += 2 * c * W1
+        d_w2 += 2 * c * W2
+        
         ### END CODE
         # the return signature
         return cost, {'d_w1': d_w1, 'd_w2': d_w2, 'd_b1': d_b1, 'd_b2': d_b2}
